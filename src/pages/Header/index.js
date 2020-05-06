@@ -18,7 +18,7 @@ export default function Profile(){
     return (
         <div className="header-content">
             <header>
-                <img src={Logo} alt="PET HOOD APP" />
+                <img src={Logo} alt="Pet Hood" />
                 <span>Seja Bem-vindo(a), <strong>{name}</strong></span>
 
                 <Link className="button" to="/incidents/new">Cadastrar Novo Caso</Link>

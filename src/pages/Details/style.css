@@ -25,7 +25,10 @@
 }
 
 .conteudo {
-    margin-right: 510px;
+    display: block;
+    position: absolute;
+    margin-left: 350px;
+    min-width: 540px;
 }
 
 .conteudo strong {
@@ -37,7 +40,9 @@
 }
 
 .contato {
+    font-weight: bold;
     display: flex;
+    align-items: center;
 }
 
 .contato button {

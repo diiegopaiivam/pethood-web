@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import './style.css';
 import logo from './../../assets/logo.svg';
+import camera from './../../assets/camera.svg';
 import { Link, useHistory } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 import api from './../../services/api';
+import Header from './../Header/index';
 
 export default function NewIncident(){
 
+    // const[image, setImage] = useState('');
     const[title, setTitle] = useState('');
     const[description, setDescription] = useState('');
     const[value, setValue] = useState('');
@@ -36,14 +39,16 @@ export default function NewIncident(){
 
 
     return (
+        <>
+        <Header />
         <div className="new-incident">
             <div className="content">
                 <section>
-                    <img src={logo} alt="be the hero" />
+                    <img src={logo} alt="Pet Hood" />
                     <h1>Cadastrar novo caso</h1>
-                    <p>Descreva o caso detalhado, para encontrar um verdadeiro herói para você</p>
+                    <p>Descreva o caso detalhado, para encontrar um ajudante para você!</p>
                     <Link className="back-link" to="/profile">
-                            <FiArrowLeft size={16} color="#E02041"/>
+                            <FiArrowLeft size={16} color="#7159c1"/>
                             Voltar para Home</Link>
                 </section>
                 <form onSubmit={handleNewIncident}>
@@ -59,9 +64,16 @@ export default function NewIncident(){
                         value={value}
                         onChange={e => setValue(e.target.value)}
                     />
+                    <label 
+                        id="image" 
+                        >
+                            <input type="file"  />
+                            <img src={camera} alt="Select img" />
+                    </label>
                     <button className="button" type="submit">Cadastrar</button>
                 </form>
             </div>
         </div>
+        </>
     );
 }

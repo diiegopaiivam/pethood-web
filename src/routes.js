@@ -15,7 +15,7 @@ export default function Routes(props){
                 <Route path="/register" component={Register} />
                 <Route path="/profile" component={Profile}  />
                 <Route path="/incidents/new" component={NewIncident} />
-                <Route path="/incidents/:id" component={Detail} />
+                <Route exact path="/incidents/:id" component={Detail} />
             </Switch>
         </BrowserRouter>
     );

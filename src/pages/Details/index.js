@@ -1,48 +1,61 @@
-import React, { useEffect, useState } from 'react';
+import React, { Component } from 'react';
 import './style.css'
 import Header from './../Header/index';
-import { Link } from 'react-router-dom';
 import api from './../../services/api';
+import { FiPhoneCall, FiMail } from 'react-icons/fi';
 
-export default props => { 
+export default class Details extends Component {
 
-    const [incidents, setIncidents] = useState([]);
-    const  id  = props.id;
-    console.log(id);
+    constructor(props){
+        super(props);
+        this.state = {
+            incidents: {
+                incident: {
+                    description: '',
+                    title: '',
+                    value: '',
+                    image_url: '',
+                    phone:'',
+                    email:''
+                }
+            } 
+        }
+    }
     
-
-    useEffect(() => {
-        api.get(`incidents/${id}`).then(response => {
-            setIncidents(response.data);
+    componentWillMount () {
+        api.get(`incidents/${this.props.match.params.id}`).then(response => {
+            this.setState({ incidents: response.data });
         })
-    }, []);
+    }
     
-    return (
-        <>
-            <Header />
-            <section className="container">
-                <div className="card">
-                    <div className="image-card">
-                        <img src="ggg"/>
-                    </div>
-                    <div className="conteudo">
-                        <strong>Caso:</strong>
-                        <p>sdfisdhfsdu</p>
-                        <hr/>
-                        <strong>Descrição:</strong>
-                        <p>Encontrei esse gato com a pata quebrada</p>
-                        <hr/>
-                        <strong>Valor:</strong>
-                        <p>R$ 200,00</p>
-                        <hr/>
-                        <div className="contato">
-                            <strong>Entre em contato: </strong>
-                            <Link className="back-link-detail" to="#"> Phone </Link> - <Link className="back-link-detail" to="#"> Email </Link>
+    render(){
+        console.log(this.state.incidents);
+        return (
+            <>
+                <Header />
+                <section className="container">
+                    <div className="card">
+                        <div className="image-card">
+                            <img src={this.state.incidents.incident.image_url} alt="image_url"/>
                         </div>
-                        
+                        <div className="conteudo">
+                            <strong>Caso:</strong>
+                            <p>{this.state.incidents.incident.title}</p>
+                            <hr/>
+                            <strong>Descrição:</strong>
+                            <p>{this.state.incidents.incident.description}</p>
+                            <hr/>
+                            <strong>Valor:</strong>
+                            <p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL'}).format(this.state.incidents.incident.value)}</p>
+                            <hr/>
+                            <strong>Entre em contato: </strong>
+                            <div className="contato">
+                                <FiPhoneCall size={18} color="#7159c1" /> &nbsp;<p> (85) {this.state.incidents.phone}</p> &nbsp;&nbsp; <FiMail size={18} color="#7159c1" /> &nbsp;<p> {this.state.incidents.email} </p>
+                            </div> 
+                        </div>
                     </div>
-                </div>
-            </section>
-        </>
-    );
+                </section>
+            </>
+        );
+    }
 }
