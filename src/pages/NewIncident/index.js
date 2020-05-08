@@ -2,41 +2,36 @@ import React, { useState } from 'react';
 import './style.css';
 import logo from './../../assets/logo.svg';
 import camera from './../../assets/camera.svg';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 import api from './../../services/api';
 import Header from './../Header/index';
+export default function New({ history }){
 
-export default function NewIncident(){
+    const [ image, setImage ] = useState(null);
+    const [ title, setTitle ] = useState('');
+    const [ description, setDescription ] = useState('');
+    const [ value, setValue ] = useState('');
 
-    // const[image, setImage] = useState('');
-    const[title, setTitle] = useState('');
-    const[description, setDescription] = useState('');
-    const[value, setValue] = useState('');
-    const ongId = localStorage.getItem('ongId');
-    const history = useHistory();
 
-    async function handleNewIncident(e){
+    function handleSubmit(e){
         e.preventDefault();
 
-        const data = {
-            title,
-            description,
-            value,
-        }
-        
-        try{
-            await api.post('incidents', data, {
-                headers: {
-                    Authorization: ongId, 
-                }
-            })
-            history.push('/profile');
-        } catch(err){
-            alert("Não foi possível cadastrar o caso, tente novamente!")
-        }
-    }
+        const data = new FormData()
+        const user_id = localStorage.getItem('user_id')
 
+        data.append('image', image)
+        data.append('title', title)
+        data.append('description', description)
+        data.append('value', value)
+
+        api.post('incidents', data, {
+            Authorization: { user_id }
+        })
+
+        alert('Cadastrado com sucesso!')
+        history.push('/profile');
+    }
 
     return (
         <>
@@ -51,7 +46,7 @@ export default function NewIncident(){
                             <FiArrowLeft size={16} color="#7159c1"/>
                             Voltar para Home</Link>
                 </section>
-                <form onSubmit={handleNewIncident}>
+                <form onSubmit={handleSubmit}>
                     <input placeholder="Título do caso"
                         value={title}
                         onChange={e => setTitle(e.target.value)} 
@@ -67,7 +62,7 @@ export default function NewIncident(){
                     <label 
                         id="image" 
                         >
-                            <input type="file"  />
+                            <input type="file" onChange={e => setImage(e.target.files[0])} />
                             <img src={camera} alt="Select img" />
                     </label>
                     <button className="button" type="submit">Cadastrar</button>
