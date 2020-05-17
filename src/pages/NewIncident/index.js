@@ -6,28 +6,34 @@ import { Link } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 import api from './../../services/api';
 import Header from './../Header/index';
-export default function New({ history }){
 
+
+export default function New({ history }){
     const [ image, setImage ] = useState(null);
     const [ title, setTitle ] = useState('');
     const [ description, setDescription ] = useState('');
     const [ value, setValue ] = useState('');
 
 
+
     function handleSubmit(e){
         e.preventDefault();
-
+        const user_id = localStorage.getItem('users_id');
+        
         const data = new FormData()
-        const user_id = localStorage.getItem('user_id')
+        
 
         data.append('image', image)
         data.append('title', title)
         data.append('description', description)
         data.append('value', value)
-
+        
+        
         api.post('incidents', data, {
-            Authorization: { user_id }
-        })
+            headers: { user_id }
+        });
+
+        
 
         alert('Cadastrado com sucesso!')
         history.push('/profile');
